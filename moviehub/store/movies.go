@@ -61,7 +61,8 @@ func (s *Store) GetMovie(ctx context.Context, id int64) (MovieDetail, error) {
                 extract(year FROM m.release_date)::int,
                 round(m.vote_average, 1)::float8,
                 CASE WHEN m.poster_path LIKE 'http%' THEN m.poster_path
-                     ELSE 'https://image.tmdb.org/t/p/w500' || m.poster_path END
+                     ELSE 'https://image.tmdb.org/t/p/w500' || m.poster_path END,
+                     m.overview
          FROM movies m
          WHERE m.id = $1`, id).
         Scan(&m.ID, &m.Title, &m.TitleTh, &m.Genre, &m.Year, &m.Rating, &m.Poster, &m.Detail)
